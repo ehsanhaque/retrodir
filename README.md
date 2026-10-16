@@ -23,3 +23,10 @@ It can move and delete files, so keep backups.
 RetroDir is released under the [MIT licence](LICENSE), copyright (c) 2026 Ehsan Haque.
 It includes [SwiftTerm](https://github.com/migueldeicaza/SwiftTerm) (MIT, see `vendor/SwiftTerm/LICENSE`);
 the app bundle ships both licences in `Contents/Resources/LICENSES.txt` (Options > Licences in the app).
+
+## Releasing
+
+`./release.sh` builds a universal (Apple silicon + Intel) app, signs it with the Developer ID certificate in
+the keychain, packages `build/RetroDir.dmg`, notarizes it with the `retrodir-notary` notarytool profile and
+staples the ticket. Upload the DMG to a GitHub Release as `RetroDir.dmg` so the website's download link
+(`releases/latest/download/RetroDir.dmg`) keeps working.

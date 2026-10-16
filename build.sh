@@ -3,28 +3,35 @@
 # SwiftTerm (MIT, vendored at vendor/SwiftTerm, tag v1.9.0) is compiled once into a static library.
 set -e
 cd "$(dirname "$0")"
-ARCH=$(uname -m)
-TARGET=$ARCH-apple-macos13.0
+# ARCHS="arm64 x86_64" ./build.sh makes a universal binary; the default is this Mac's architecture.
+ARCHS=${ARCHS:-$(uname -m)}
 APP=build/RetroDir.app
 ST=vendor/SwiftTerm/Sources/SwiftTerm
-mkdir -p build/mod
 
 if [ ! -d "$ST" ]; then
   git clone -q --depth 1 --branch v1.9.0 https://github.com/migueldeicaza/SwiftTerm vendor/SwiftTerm
 fi
 
-LIB=build/libSwiftTerm.a
-if [ ! -f "$LIB" ] || [ -n "$(find $ST -name '*.swift' -newer $LIB)" ]; then
-  echo "Compiling SwiftTerm..."
-  swiftc -O -swift-version 5 -target $TARGET -parse-as-library -module-name SwiftTerm \
-    -emit-library -static -emit-module -emit-module-path build/mod/SwiftTerm.swiftmodule -o $LIB \
-    $ST/*.swift $ST/Apple/*.swift $ST/Mac/*.swift
-fi
+BINS=()
+for ARCH in ${=ARCHS}; do
+  TARGET=$ARCH-apple-macos13.0
+  OUT=build/$ARCH
+  mkdir -p $OUT/mod
+  LIB=$OUT/libSwiftTerm.a
+  if [ ! -f "$LIB" ] || [ -n "$(find $ST -name '*.swift' -newer $LIB)" ]; then
+    echo "Compiling SwiftTerm ($ARCH)..."
+    swiftc -O -swift-version 5 -target $TARGET -parse-as-library -module-name SwiftTerm \
+      -emit-library -static -emit-module -emit-module-path $OUT/mod/SwiftTerm.swiftmodule -o $LIB \
+      $ST/*.swift $ST/Apple/*.swift $ST/Mac/*.swift
+  fi
 
-echo "Compiling RetroDir..."
-swiftc -O -swift-version 5 -target $TARGET -I build/mod -L build -lSwiftTerm \
-  -framework AppKit -framework Quartz -framework Metal -framework MetalKit -framework CoreText \
-  Sources/RetroDir/*.swift -o build/RetroDir
+  echo "Compiling RetroDir ($ARCH)..."
+  swiftc -O -swift-version 5 -target $TARGET -I $OUT/mod -L $OUT -lSwiftTerm \
+    -framework AppKit -framework Quartz -framework Metal -framework MetalKit -framework CoreText \
+    Sources/RetroDir/*.swift -o $OUT/RetroDir
+  BINS+=($OUT/RetroDir)
+done
+lipo -create $BINS -output build/RetroDir
 
 rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
