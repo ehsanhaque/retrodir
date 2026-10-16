@@ -1,5 +1,7 @@
 # RetroDir
 
+**Website:** https://ehsanhaque.github.io/retrodir/
+
 A retro dual-panel file manager (inspired by the classic orthodox file managers) for macOS, written in Swift/AppKit with a text-mode look,
 plus a built-in tabbed terminal in a bottom split (Cmd-T).
 

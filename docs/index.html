@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RetroDir — retro dual-panel file manager for macOS</title>
+<meta name="description" content="RetroDir is a free, open-source, keyboard-first dual-panel file manager for macOS with a classic text-mode look and a built-in tabbed terminal.">
+<meta property="og:title" content="RetroDir">
+<meta property="og:description" content="A retro dual-panel file manager for macOS with a built-in tabbed terminal. Free and open source.">
+<meta property="og:image" content="https://ehsanhaque.github.io/retrodir/img/hero.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="img/favicon.png">
+<link rel="apple-touch-icon" href="img/icon.png">
+<style>
+  :root {
+    --blue: #0000aa;
+    --blue-deep: #00006e;
+    --cyan: #55ffff;
+    --cyan-dim: #00aaaa;
+    --teal: #4fa9a9;
+    --yellow: #ffff55;
+    --white: #ffffff;
+    --grey: #aaaaaa;
+    --black: #000000;
+    --green: #55ff55;
+    --mono: "SF Mono", Menlo, Monaco, "Cascadia Mono", "Roboto Mono", Consolas, "Liberation Mono", monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--blue-deep);
+    color: var(--white);
+    font: 16px/1.6 var(--sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--cyan); }
+  img { max-width: 100%; height: auto; display: block; }
+  .mono { font-family: var(--mono); }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+
+  /* Menu bar, styled like the app's */
+  .menubar {
+    position: sticky; top: 0; z-index: 10;
+    background: var(--teal); color: var(--black);
+    font: 15px/1 var(--mono);
+  }
+  .menubar .wrap { display: flex; align-items: center; gap: 4px; height: 40px; }
+  .menubar a {
+    color: var(--black); text-decoration: none; padding: 8px 12px; white-space: nowrap;
+  }
+  .menubar a:hover, .menubar a:focus-visible { background: var(--black); color: var(--white); outline: none; }
+  .menubar .brand { font-weight: 700; display: flex; align-items: center; gap: 8px; padding-left: 0; }
+  .menubar .brand img { width: 22px; height: 22px; }
+  .menubar .spacer { flex: 1; }
+  .menubar .clock { padding: 0 4px; }
+
+  /* Hero */
+  .hero { background: var(--blue); padding: 64px 0 56px; text-align: center; border-bottom: 3px double var(--cyan); }
+  .hero .icon { width: 128px; height: 128px; margin: 0 auto 12px; }
+  .hero h1 { font: 700 clamp(40px, 7vw, 64px)/1.05 var(--mono); margin: 0 0 12px; color: var(--yellow); letter-spacing: -0.02em; }
+  .hero .tagline { font-size: clamp(18px, 2.4vw, 22px); color: var(--white); margin: 0 auto 8px; max-width: 680px; }
+  .hero .sub { color: var(--cyan); font: 14px/1.6 var(--mono); margin: 0 0 28px; }
+  .buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn {
+    font: 600 16px/1 var(--mono); text-decoration: none; padding: 14px 22px;
+    border: 2px solid var(--cyan); color: var(--cyan); background: transparent;
+  }
+  .btn.primary { background: var(--cyan); color: var(--black); }
+  .btn:hover, .btn:focus-visible { background: var(--yellow); border-color: var(--yellow); color: var(--black); outline: none; }
+  .shot {
+    margin: 44px auto 0; width: 100%; max-width: min(1040px, 100%);
+    border: 3px double var(--cyan); background: var(--black);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Sections */
+  section { padding: 72px 0; }
+  section + section { border-top: 1px solid rgba(85, 255, 255, 0.18); }
+  h2 {
+    font: 700 clamp(26px, 4vw, 34px)/1.2 var(--mono); color: var(--yellow);
+    margin: 0 0 8px;
+  }
+  .lead { color: var(--grey); margin: 0 0 32px; max-width: 720px; }
+
+  /* Feature panels: double-line frames like the app */
+  .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 24px 20px; }
+  .panel {
+    position: relative; min-width: 0; background: var(--blue); border: 3px double var(--cyan);
+    padding: 26px 20px 20px;
+  }
+  .panel h3 {
+    position: absolute; top: -13px; left: 14px; margin: 0; padding: 0 8px;
+    background: var(--teal); color: var(--black); font: 700 14px/1.6 var(--mono);
+  }
+  .panel p { margin: 0; color: #e8e8ff; font-size: 15px; }
+  .panel kbd, .keys kbd {
+    font: 13px/1 var(--mono); color: var(--yellow); background: rgba(0, 0, 0, 0.35);
+    padding: 2px 5px; border: 1px solid rgba(255, 255, 85, 0.35);
+  }
+
+  /* Gallery */
+  .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+  .tabs button {
+    font: 14px/1 var(--mono); padding: 10px 14px; cursor: pointer;
+    background: transparent; color: var(--cyan); border: 1px solid var(--cyan-dim);
+  }
+  .tabs button[aria-selected="true"] { background: var(--cyan); color: var(--black); border-color: var(--cyan); }
+  .tabs button:hover { border-color: var(--yellow); }
+  .gallery figure { margin: 0; }
+  .gallery figure[hidden] { display: none; }
+  .gallery img { border: 3px double var(--cyan); background: var(--black); cursor: zoom-in; width: 100%; }
+  .gallery figcaption { margin-top: 12px; color: var(--grey); font-size: 15px; }
+
+  .themes { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 18px; }
+  .themes figure { margin: 0; }
+  .themes img { border: 2px solid rgba(85, 255, 255, 0.4); cursor: zoom-in; }
+  .themes figcaption { font: 14px/1.4 var(--mono); color: var(--cyan); margin-top: 8px; }
+
+  /* Keys table */
+  .keys { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 6px 28px; font-size: 15px; }
+  .keys div { display: flex; gap: 12px; padding: 6px 0; border-bottom: 1px dotted rgba(85, 255, 255, 0.2); }
+  .keys kbd { min-width: 92px; text-align: center; flex: none; }
+
+  /* Download */
+  .download { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 24px; }
+  pre {
+    margin: 12px 0 0; padding: 16px; overflow-x: auto; background: var(--black); color: var(--white);
+    font: 14px/1.6 var(--mono); border: 1px solid rgba(85, 255, 255, 0.3);
+  }
+  pre .c { color: var(--grey); }
+  .note { color: var(--grey); font-size: 14px; margin-top: 12px; }
+  .panel .btn { display: inline-block; margin-top: 16px; }
+
+  /* Footer: an F-key bar */
+  footer { background: var(--black); padding: 36px 0 0; color: var(--grey); font-size: 14px; }
+  footer p { margin: 0 0 10px; max-width: 820px; }
+  footer .disclaimer { color: #d8d8d8; }
+  .fkeys {
+    display: grid; grid-template-columns: repeat(5, 1fr); margin-top: 28px;
+    font: 15px/1 var(--mono);
+  }
+  .fkeys a { display: flex; text-decoration: none; color: var(--black); background: var(--teal); }
+  .fkeys a span { background: var(--black); color: var(--white); padding: 10px 4px 10px 8px; }
+  .fkeys a b { font-weight: 400; padding: 10px 8px; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .fkeys a:hover b, .fkeys a:focus-visible b { background: var(--yellow); }
+
+  /* Lightbox */
+  dialog { padding: 0; border: 3px double var(--cyan); background: var(--black); max-width: 96vw; max-height: 94vh; }
+  dialog::backdrop { background: rgba(0, 0, 40, 0.85); }
+  dialog img { max-width: 94vw; max-height: 90vh; width: auto; cursor: zoom-out; }
+
+  @media (max-width: 720px) {
+    .menubar .opt { display: none; }
+    .menubar .clock { display: none; }
+    .hero { padding: 44px 0 40px; }
+    .hero .icon { width: 96px; height: 96px; }
+    section { padding: 52px 0; }
+    .fkeys { grid-template-columns: repeat(2, 1fr); }
+    .wrap { padding: 0 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+
+<nav class="menubar" aria-label="Main">
+  <div class="wrap">
+    <a class="brand" href="#top"><img src="img/favicon.png" alt="">RetroDir</a>
+    <a class="opt" href="#features">Features</a>
+    <a class="opt" href="#screenshots">Screenshots</a>
+    <a href="#download">Download</a>
+    <a href="https://github.com/ehsanhaque/retrodir">GitHub</a>
+    <span class="spacer"></span>
+    <span class="clock" id="clock" aria-hidden="true"></span>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <img class="icon" src="img/icon.png" alt="RetroDir app icon: a beige CRT monitor showing two blue file panels">
+    <h1>RetroDir</h1>
+    <p class="tagline">A retro dual-panel file manager for macOS, with a built-in tabbed terminal.</p>
+    <p class="sub">Free · Open source (MIT) · Keyboard-first · macOS 13 or later</p>
+    <div class="buttons">
+      <a class="btn primary" href="#download">Download for macOS</a>
+      <a class="btn" href="https://github.com/ehsanhaque/retrodir">View on GitHub</a>
+    </div>
+    <img class="shot" src="img/hero.png" width="1754" height="884"
+         alt="RetroDir main window: two blue panels side by side listing files, a menu bar on top and a function-key bar at the bottom">
+  </div>
+</header>
+
+<main>
+<section id="features">
+  <div class="wrap">
+    <h2>Two panels. Ten function keys. No clutter.</h2>
+    <p class="lead">RetroDir brings the classic orthodox file manager layout to the Mac: two folders side by side, everything on the keyboard, and a text-mode look that stays out of your way.</p>
+    <div class="features">
+      <div class="panel"><h3>Dual panels</h3>
+        <p>Copy, move, rename and delete between two folders with <kbd>F5</kbd>–<kbd>F8</kbd>. Brief and full views, sorting, group select with masks, compare folders.</p></div>
+      <div class="panel"><h3>Built-in terminal</h3>
+        <p>Press <kbd>Cmd-T</kbd> to split the window with a full terminal underneath. Tabs, resizing, and syncing the shell with the active panel's folder.</p></div>
+      <div class="panel"><h3>Viewer &amp; editor</h3>
+        <p><kbd>F3</kbd> views text or hex, even for very large files. <kbd>F4</kbd> opens an editor with undo, search and replace, and selection.</p></div>
+      <div class="panel"><h3>Quick View &amp; Info</h3>
+        <p>Preview text, images and archive contents in the other panel with <kbd>Ctrl-Q</kbd>, or show folder and disk details with <kbd>Ctrl-L</kbd>.</p></div>
+      <div class="panel"><h3>Archives &amp; search</h3>
+        <p>Pack to zip or tar, unpack to the other panel, and find files by name mask and contents with <kbd>Alt-F7</kbd>.</p></div>
+      <div class="panel"><h3>Made for the Mac</h3>
+        <p>Trash support, Quick Look, Finder drag and drop, APFS clones for fast copies, and <kbd>Cmd-1</kbd>…<kbd>Cmd-0</kbd> as F-keys on laptops.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="screenshots">
+  <div class="wrap">
+    <h2>A closer look</h2>
+    <p class="lead">Every screen is drawn on a character grid, just like the originals, but with crisp Retina text.</p>
+    <div class="tabs" role="tablist" aria-label="Screenshots">
+      <button role="tab" aria-selected="true" aria-controls="g-terminal" id="t-terminal">Terminal</button>
+      <button role="tab" aria-selected="false" aria-controls="g-menu" id="t-menu">Menus</button>
+      <button role="tab" aria-selected="false" aria-controls="g-quick" id="t-quick">Quick View</button>
+      <button role="tab" aria-selected="false" aria-controls="g-viewer" id="t-viewer">Viewer</button>
+      <button role="tab" aria-selected="false" aria-controls="g-editor" id="t-editor">Editor</button>
+    </div>
+    <div class="gallery">
+      <figure role="tabpanel" id="g-terminal" aria-labelledby="t-terminal">
+        <img src="img/terminal.png" width="1754" height="1292" loading="lazy" alt="Two file panels above a full-width terminal with two tabs, showing git log and a line count">
+        <figcaption>The terminal opens below both panels. Each tab is a real login shell.</figcaption>
+      </figure>
+      <figure role="tabpanel" id="g-menu" aria-labelledby="t-menu" hidden>
+        <img src="img/menu.png" width="1754" height="884" loading="lazy" alt="The Commands pull-down menu open over the panels">
+        <figcaption>Pull-down menus with <kbd>F9</kbd>, or click the menu bar. Every command shows its shortcut.</figcaption>
+      </figure>
+      <figure role="tabpanel" id="g-quick" aria-labelledby="t-quick" hidden>
+        <img src="img/quickview.png" width="1754" height="884" loading="lazy" alt="Quick View showing an image preview in the right panel">
+        <figcaption>Quick View previews the file under the cursor in the other panel.</figcaption>
+      </figure>
+      <figure role="tabpanel" id="g-viewer" aria-labelledby="t-viewer" hidden>
+        <img src="img/viewer.png" width="1754" height="884" loading="lazy" alt="The full-screen file viewer showing a text file">
+        <figcaption>The <kbd>F3</kbd> viewer: wrap, hex mode, go to line or offset, and search.</figcaption>
+      </figure>
+      <figure role="tabpanel" id="g-editor" aria-labelledby="t-editor" hidden>
+        <img src="img/editor.png" width="1754" height="884" loading="lazy" alt="The built-in editor with Swift source code">
+        <figcaption>The <kbd>F4</kbd> editor, for quick changes without leaving the keyboard.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section id="themes">
+  <div class="wrap">
+    <h2>Four colour themes</h2>
+    <p class="lead">Classic Blue is the default. Switch any time from Options in the menu.</p>
+    <div class="themes">
+      <figure><img src="img/hero.png" width="1754" height="884" loading="lazy" alt="Classic Blue theme"><figcaption>Classic Blue</figcaption></figure>
+      <figure><img src="img/theme-1.png" width="1754" height="884" loading="lazy" alt="Midnight theme"><figcaption>Midnight</figcaption></figure>
+      <figure><img src="img/theme-2.png" width="1754" height="884" loading="lazy" alt="Amber theme"><figcaption>Amber</figcaption></figure>
+      <figure><img src="img/theme-3.png" width="1754" height="884" loading="lazy" alt="Navy theme"><figcaption>Navy</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section id="keys">
+  <div class="wrap">
+    <h2>The essentials</h2>
+    <p class="lead">Press <kbd>F1</kbd> in the app for the full keyboard reference. Everything works with the mouse too.</p>
+    <div class="keys">
+      <div><kbd>Tab</kbd><span>Switch panels</span></div>
+      <div><kbd>Enter</kbd><span>Open folder or file</span></div>
+      <div><kbd>F3</kbd><span>View file</span></div>
+      <div><kbd>F4</kbd><span>Edit file</span></div>
+      <div><kbd>F5</kbd><span>Copy to other panel</span></div>
+      <div><kbd>F6</kbd><span>Rename or move</span></div>
+      <div><kbd>F7</kbd><span>Make folder</span></div>
+      <div><kbd>F8</kbd><span>Move to Trash</span></div>
+      <div><kbd>F9</kbd><span>Pull-down menu</span></div>
+      <div><kbd>Cmd-T</kbd><span>Terminal panel</span></div>
+      <div><kbd>Insert</kbd><span>Select and move down</span></div>
+      <div><kbd>Ctrl-Q</kbd><span>Quick View</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="download">
+  <div class="wrap">
+    <h2>Get RetroDir</h2>
+    <p class="lead">RetroDir is free. Download a release, or build it yourself in under a minute.</p>
+    <div class="download">
+      <div class="panel"><h3>Download</h3>
+        <p>Signed and notarized builds are published on the GitHub Releases page. Requires macOS 13 Ventura or later.</p>
+        <a class="btn primary" href="https://github.com/ehsanhaque/retrodir/releases/latest">Latest release</a>
+        <p class="note">If no release is listed yet, the first signed build is on its way. Building from source works today.</p>
+      </div>
+      <div class="panel"><h3>Build from source</h3>
+        <p>Needs only Apple's Command Line Tools. No Xcode project, no package manager.</p>
+<pre><span class="c"># one-time, if you don't have them</span>
+xcode-select --install
+
+git clone https://github.com/ehsanhaque/retrodir.git
+cd retrodir
+./build.sh
+open build/RetroDir.app</pre>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="disclaimer"><strong>RetroDir is an experimental, non-commercial project built with AI (Claude Code).</strong>
+      Original code and artwork; not affiliated with or endorsed by any other file manager or its owners.
+      Provided as is, without warranty. It can move and delete files, so keep backups.</p>
+    <p>© 2026 Ehsan Haque · Released under the <a href="https://github.com/ehsanhaque/retrodir/blob/main/LICENSE">MIT licence</a> ·
+      Terminal emulation by <a href="https://github.com/migueldeicaza/SwiftTerm">SwiftTerm</a> (MIT)</p>
+  </div>
+  <nav class="fkeys" aria-label="Footer">
+    <a href="#top"><span>1</span><b>Top</b></a>
+    <a href="#features"><span>2</span><b>Features</b></a>
+    <a href="#screenshots"><span>3</span><b>View</b></a>
+    <a href="#download"><span>4</span><b>Download</b></a>
+    <a href="https://github.com/ehsanhaque/retrodir"><span>5</span><b>GitHub</b></a>
+  </nav>
+</footer>
+
+<dialog id="lightbox" aria-label="Screenshot"><img alt=""></dialog>
+
+<script>
+  // Menu-bar clock, like the app's
+  const clock = document.getElementById('clock');
+  const tick = () => {
+    const d = new Date();
+    clock.textContent = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+  };
+  tick(); setInterval(tick, 10000);
+
+  // Screenshot tabs
+  const tabs = [...document.querySelectorAll('[role="tab"]')];
+  tabs.forEach(tab => tab.addEventListener('click', () => {
+    tabs.forEach(t => {
+      const on = t === tab;
+      t.setAttribute('aria-selected', on);
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    });
+  }));
+
+  // Click a screenshot to enlarge it
+  const box = document.getElementById('lightbox'), big = box.querySelector('img');
+  document.querySelectorAll('.gallery img, .themes img, .hero .shot').forEach(img => {
+    img.addEventListener('click', () => { big.src = img.src; big.alt = img.alt; box.showModal(); });
+  });
+  box.addEventListener('click', () => box.close());
+</script>
+</body>
+</html>
