@@ -189,16 +189,21 @@ final class TermView: NSView, QLPreviewPanelDataSource, QLPreviewPanelDelegate {
         return info
     }
 
+    override var isOpaque: Bool { !app.theme.translucent }
+
     override func draw(_ dirtyRect: NSRect) {
         guard let ctx = NSGraphicsContext.current?.cgContext else { return }
         let (c, r) = grid
         screen.resize(c, r)
         app.render(screen)
         app.layoutDock(cellW: cellW, cellH: cellH)
-        let pal = app.theme.palette
+        let pal = app.theme.palette, bgPal = app.theme.background
 
         ctx.setShouldAntialias(false)
-        ctx.setFillColor(pal[0])
+        // Backgrounds replace what is underneath rather than blending, so translucent themes get
+        // exactly their background alpha over the window's blur.
+        ctx.setBlendMode(.copy)
+        ctx.setFillColor(bgPal[0])
         ctx.fill(bounds)
         // Backgrounds, merged into horizontal runs.
         for y in 0..<r {
@@ -209,7 +214,7 @@ final class TermView: NSView, QLPreviewPanelDataSource, QLPreviewPanelDelegate {
                 var x2 = x + 1
                 while x2 < c && screen.cells[base + x2].a.bg == bg { x2 += 1 }
                 if bg != 0 {
-                    ctx.setFillColor(pal[Int(bg)])
+                    ctx.setFillColor(bgPal[Int(bg)])
                     let x0 = (CGFloat(x) * cellW).rounded(.down)
                     let x1 = x2 == c ? bounds.width : (CGFloat(x2) * cellW).rounded(.down)
                     let y1 = y == r - 1 ? bounds.height : CGFloat(y + 1) * cellH
@@ -218,6 +223,7 @@ final class TermView: NSView, QLPreviewPanelDataSource, QLPreviewPanelDelegate {
                 x = x2
             }
         }
+        ctx.setBlendMode(.normal)
         ctx.setShouldAntialias(true)
 
         // Glyphs

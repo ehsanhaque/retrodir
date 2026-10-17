@@ -29,6 +29,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     var window: NSWindow!
     let commander = Commander()
     var term: TermView!
+    let glass = NSVisualEffectView()
 
     func applicationDidFinishLaunching(_ note: Notification) {
         buildMenu()
@@ -46,6 +47,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         window.contentMinSize = NSSize(width: term.cellW * 60, height: term.cellH * 16)
         let container = DropView(frame: NSRect(origin: .zero, size: size))
         container.term = term
+        // Frosted backdrop for translucent themes: blurs whatever is behind the window.
+        glass.frame = container.bounds
+        glass.autoresizingMask = [.width, .height]
+        glass.blendingMode = .behindWindow
+        glass.material = .hudWindow
+        glass.state = .active
+        glass.appearance = NSAppearance(named: .darkAqua)
+        container.addSubview(glass)
         term.frame = container.bounds
         term.autoresizingMask = [.width, .height]
         container.addSubview(term)
@@ -53,7 +62,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         commander.container = container
         window.center()
         window.setFrameAutosaveName("RetroDirMain")
-        window.backgroundColor = .black
+        applyWindowStyle()
+        commander.onThemeChange = { [unowned self] in applyWindowStyle() }
         window.makeKeyAndOrderFront(nil)
         window.makeFirstResponder(term)
         NSApp.activate(ignoringOtherApps: true)
@@ -62,6 +72,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         }
 
         runTestScriptIfRequested()
+    }
+
+    /// Opaque themes paint a solid window; translucent ones show the blurred desktop through it.
+    func applyWindowStyle() {
+        let clear = commander.theme.translucent
+        glass.isHidden = !clear
+        window.isOpaque = !clear
+        window.backgroundColor = clear ? .clear : .black
+        window.invalidateShadow()
+        term.needsDisplay = true
     }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool { true }
@@ -114,7 +134,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         }
         if let l = arg("--left") { commander.left.go(URL(fileURLWithPath: l), recordHistory: false) }
         if let r = arg("--right") { commander.right.go(URL(fileURLWithPath: r), recordHistory: false) }
-        if let t = arg("--theme"), let i = Int(t) { commander.themeIndex = i }
+        if let t = arg("--theme"), let i = Int(t) { commander.themeIndex = min(themes.count - 1, max(0, i)); commander.dock?.applyStyle(); applyWindowStyle() }
         if let sz = arg("--size") {
             let parts = sz.split(separator: "x").compactMap { Double($0) }
             if parts.count == 2 {
@@ -126,6 +146,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         func next() {
             guard !steps.isEmpty else {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    // The blur can't be captured from inside the app; leave it out so translucent
+                    // themes come out with real transparency in the PNG.
+                    self.glass.isHidden = true
                     let root = self.window.contentView!
                     root.display()
                     if let rep = root.bitmapImageRepForCachingDisplay(in: root.bounds) {

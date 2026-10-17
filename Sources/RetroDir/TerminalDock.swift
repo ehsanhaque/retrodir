@@ -168,9 +168,13 @@ final class TerminalDock: NSView, LocalProcessTerminalViewDelegate {
         let views = v.map { [$0] } ?? tabs.map(\.view)
         let pal = app.theme.palette
         let font = NSFont(name: "Menlo", size: app.fontSize) ?? .monospacedSystemFont(ofSize: app.fontSize, weight: .regular)
+        let clear = app.theme.translucent
         for tv in views {
             tv.font = font
-            tv.nativeBackgroundColor = NSColor(cgColor: pal[0]) ?? .black
+            // Translucent themes: the terminal draws no background of its own, so the window's
+            // tinted glass (painted by the panels view underneath) shows through evenly.
+            tv.nativeBackgroundColor = clear ? .clear : NSColor(cgColor: pal[0]) ?? .black
+            tv.layer?.backgroundColor = clear ? .clear : pal[0]
             tv.nativeForegroundColor = NSColor(cgColor: pal[7]) ?? .lightGray
             tv.caretColor = NSColor(cgColor: pal[11]) ?? .cyan
             tv.selectedTextBackgroundColor = (NSColor(cgColor: pal[3]) ?? .darkGray).withAlphaComponent(0.6)

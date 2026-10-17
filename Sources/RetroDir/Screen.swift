@@ -42,12 +42,19 @@ let roleAttrs: [Attr] = Role.allCases.map { roleTable[$0] ?? Attr(fg: 7, bg: 0) 
 struct Theme {
     let name: String
     let palette: [CGColor]
-    init(_ name: String, _ hex: [UInt32]) {
+    /// Colours used for cell backgrounds. Same as `palette` unless the theme is translucent,
+    /// in which case some background colours let the blurred desktop show through.
+    let background: [CGColor]
+    var translucent: Bool { background.contains { $0.alpha < 1 } }
+
+    init(_ name: String, _ hex: [UInt32], backgroundAlpha: [Int: CGFloat] = [:]) {
         self.name = name
-        palette = hex.map {
-            CGColor(srgbRed: CGFloat(($0 >> 16) & 0xff) / 255, green: CGFloat(($0 >> 8) & 0xff) / 255,
-                    blue: CGFloat($0 & 0xff) / 255, alpha: 1)
+        func color(_ v: UInt32, _ a: CGFloat) -> CGColor {
+            CGColor(srgbRed: CGFloat((v >> 16) & 0xff) / 255, green: CGFloat((v >> 8) & 0xff) / 255,
+                    blue: CGFloat(v & 0xff) / 255, alpha: a)
         }
+        palette = hex.map { color($0, 1) }
+        background = hex.enumerated().map { color($1, backgroundAlpha[$0] ?? 1) }
     }
 }
 
@@ -60,6 +67,10 @@ let themes: [Theme] = [
                     0x6B4A00, 0xFFC640, 0xFFD060, 0xFFB000, 0xFFD27A, 0xFFC640, 0xFFE6A8, 0xFFEDC4]),
     Theme("Navy", [0x000000, 0x000080, 0x008000, 0x008080, 0x800000, 0x800080, 0x808000, 0xC0C0C0,
                           0x808080, 0x0000FF, 0x00FF00, 0x00FFFF, 0xFF0000, 0xFF00FF, 0xFFFF00, 0xFFFFFF]),
+    // Translucent: panels, console and menus are tinted glass over a blurred desktop. Text stays opaque.
+    Theme("Frost", [0x0A0E18, 0x1C2A4A, 0x5BD69A, 0x9FD4FF, 0x8A2236, 0xB48CFF, 0xD6A35C, 0xDCE6F2,
+                    0x5A6478, 0x7FB2FF, 0x8BF0B8, 0xCFEAFF, 0xFF8A8A, 0xE3B0FF, 0xFFE08A, 0xFFFFFF],
+          backgroundAlpha: [0: 0.45, 1: 0.38, 3: 0.72, 4: 0.82, 7: 0.84]),
 ]
 
 // MARK: - Character grid

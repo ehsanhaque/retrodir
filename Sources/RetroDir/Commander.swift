@@ -31,6 +31,8 @@ final class Commander {
     var showHidden = false
     var themeIndex = 0
     var theme: Theme { themes[themeIndex] }
+    /// Called after the theme changes so the window can switch its translucency.
+    var onThemeChange: (() -> Void)?
     var fontSize: CGFloat = 14
     var confirmDelete = true
     var confirmQuit = true
@@ -768,7 +770,7 @@ final class Commander {
             MenuItem(title: "Clear console", shortcut: "", action: { [unowned self] in console.removeAll(); consolePartial = "" }),
         ])
         var optItems: [MenuItem] = themes.enumerated().map { i, t in
-            MenuItem(title: "Theme: " + t.name, shortcut: "", checked: i == themeIndex, action: { [unowned self] in themeIndex = i; dock?.applyStyle(); saveSettings() })
+            MenuItem(title: "Theme: " + t.name, shortcut: "", checked: i == themeIndex, action: { [unowned self] in themeIndex = i; dock?.applyStyle(); onThemeChange?(); saveSettings() })
         }
         optItems += [
             .sep,
