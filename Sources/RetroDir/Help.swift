@@ -73,7 +73,8 @@ cls          Clear the console
 Interactive programs (vim, top, ssh) need the built-in terminal (Cmd-T).
 
 # Built-in terminal (bottom split)
-Cmd-T        Open the terminal (in the active panel's folder);
+Cmd-T        Open the terminal in the active panel's folder (switches
+             to a tab already there, or opens a new one);
              with the terminal focused: new tab
 Cmd-J        Switch focus between panels and terminal
 Cmd-Shift-J  Hide / show the terminal (sessions keep running)

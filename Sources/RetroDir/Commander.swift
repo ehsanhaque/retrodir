@@ -311,6 +311,22 @@ final class Commander {
         view?.refresh()
     }
 
+    /// Cmd-T from the panels: show the terminal in the active panel's folder. Switches to a tab whose shell is
+    /// already there, otherwise opens a new tab, so shells busy with something else (ssh, vim) are never touched.
+    func openTerminalAtPanel() {
+        let had = !(dock?.tabs.isEmpty ?? true)
+        showTerminal(focus: true)
+        guard had, let dock = dock else { return }
+        let real = { (p: String) in URL(fileURLWithPath: p).resolvingSymlinksInPath().path }
+        let want = real(active.path.path)
+        if dock.currentTab?.cwd.map(real) == want { return }
+        if let i = dock.tabs.firstIndex(where: { $0.cwd.map(real) == want }) {
+            dock.select(i)
+        } else {
+            dock.newTab(cwd: active.path)
+        }
+    }
+
     func hideTerminal() {
         terminalVisible = false
         dock?.isHidden = true
@@ -345,7 +361,7 @@ final class Commander {
         }
         switch (k.code, k.mods) {
         case (.char("t"), [.cmd]):
-            if focused { dock?.newTab(cwd: dock?.currentTab?.cwd.map { URL(fileURLWithPath: $0) } ?? active.path) } else { showTerminal(focus: true) }
+            if focused { dock?.newTab(cwd: dock?.currentTab?.cwd.map { URL(fileURLWithPath: $0) } ?? active.path) } else { openTerminalAtPanel() }
         case (.char("j"), [.cmd]):
             if focused { focusPanels() } else { showTerminal(focus: true) }
         case (.char("j"), [.cmd, .shift]):
@@ -739,7 +755,7 @@ final class Commander {
             MenuItem(title: "Compare folders", shortcut: "", action: { [unowned self] in compareFolders() }),
             MenuItem(title: "Calculate folder sizes", shortcut: "", action: { [unowned self] in calcSizes(active.entries.filter { $0.isDir && !$0.isUp }) }),
             .sep,
-            MenuItem(title: "Terminal panel", shortcut: "Cmd-T", checked: terminalVisible, action: { [unowned self] in showTerminal(focus: true) }),
+            MenuItem(title: "Terminal panel", shortcut: "Cmd-T", checked: terminalVisible, action: { [unowned self] in openTerminalAtPanel() }),
             MenuItem(title: "Hide terminal panel", shortcut: "Cmd-Shift-J", action: { [unowned self] in hideTerminal() }),
             MenuItem(title: "New terminal tab", shortcut: "", action: { [unowned self] in
                 let had = !(dock?.tabs.isEmpty ?? true)
@@ -765,7 +781,7 @@ final class Commander {
             .sep,
             MenuItem(title: "Save setup", shortcut: "Shift-F9", action: { [unowned self] in saveSettings(); toast("Setup saved") }),
             MenuItem(title: "About RetroDir", shortcut: "", action: { [unowned self] in
-                message("About", "RetroDir 1.0\n\nA retro dual-panel file manager for macOS, inspired by the classic orthodox file managers.\n\nRetroDir is an experimental, non-commercial project built with AI (Claude Code). Original code and artwork; not affiliated with or endorsed by any other file manager or its owners. Provided as is, without warranty. It can move and delete files, so keep backups.\n\nCopyright (c) 2026 Ehsan Haque. MIT licence.\nTerminal emulation by SwiftTerm (MIT licence).\nOptions > Licences shows the full text.\n\nPress F1 for keyboard help.")
+                message("About", "RetroDir \(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "")\n\nA retro dual-panel file manager for macOS, inspired by the classic orthodox file managers.\n\nRetroDir is an experimental, non-commercial project built with AI (Claude Code). Original code and artwork; not affiliated with or endorsed by any other file manager or its owners. Provided as is, without warranty. It can move and delete files, so keep backups.\n\nCopyright (c) 2026 Ehsan Haque. MIT licence.\nTerminal emulation by SwiftTerm (MIT licence).\nOptions > Licences shows the full text.\n\nPress F1 for keyboard help.")
             }),
             MenuItem(title: "Licences", shortcut: "", action: { [unowned self] in showLicences() }),
         ]

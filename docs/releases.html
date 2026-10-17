@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Release notes — RetroDir</title>
+<meta name="description" content="What's new in each version of RetroDir, the retro dual-panel file manager for macOS.">
+<meta property="og:title" content="RetroDir release notes">
+<meta property="og:description" content="What's new in each version of RetroDir.">
+<meta property="og:image" content="https://retrodir.app/img/hero.png">
+<meta property="og:url" content="https://retrodir.app/releases.html">
+<link rel="canonical" href="https://retrodir.app/releases.html">
+<link rel="icon" type="image/png" href="img/favicon.png">
+<link rel="apple-touch-icon" href="img/icon.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="menubar" aria-label="Main">
+  <div class="wrap">
+    <a class="brand" href="./"><img src="img/favicon.png" alt="">RetroDir</a>
+    <a class="opt" href="./#features">Features</a>
+    <a class="opt" href="./#screenshots">Screenshots</a>
+    <a class="opt" href="releases.html" aria-current="page">Release notes</a>
+    <a href="./#download">Download</a>
+    <a href="https://github.com/ehsanhaque/retrodir">GitHub</a>
+    <span class="spacer"></span>
+    <span class="clock" id="clock" aria-hidden="true"></span>
+  </div>
+</nav>
+
+<main class="notes">
+<section>
+  <div class="wrap">
+    <h1>Release notes</h1>
+    <p class="lead">What's new in each version of RetroDir. Every release is a signed, notarized universal app for Apple silicon and Intel Macs running macOS 13 or later.</p>
+    <div class="buttons" style="justify-content: flex-start">
+      <a class="btn primary" href="https://github.com/ehsanhaque/retrodir/releases/latest/download/RetroDir.dmg">Download the latest version</a>
+    </div>
+
+    <article class="release" id="v1.0.1">
+      <h2>RetroDir 1.0.1 <span class="tag">LATEST</span> <span class="date">October 2026</span></h2>
+      <h3>Fixed</h3>
+      <ul>
+        <li><kbd>Cmd-T</kbd> from a panel now opens the terminal in that panel's current folder. Before, it always brought back the first terminal tab in whatever folder it started in. If a tab is already in that folder, RetroDir switches to it; otherwise it opens a new tab there. Shells that are busy (an ssh session, an editor) are never changed.</li>
+        <li>The About box now shows the correct version number.</li>
+      </ul>
+      <p class="links"><a href="https://github.com/ehsanhaque/retrodir/releases/tag/v1.0.1">Download 1.0.1 on GitHub</a></p>
+    </article>
+
+    <article class="release" id="v1.0">
+      <h2>RetroDir 1.0 <span class="date">October 16, 2026</span></h2>
+      <p class="lead" style="margin: 8px 0 0">The first public release.</p>
+      <h3>Highlights</h3>
+      <ul>
+        <li>Two side-by-side panels with function-key file operations: view, edit, copy, rename or move, make folder, and move to Trash (<kbd>F3</kbd>–<kbd>F8</kbd>).</li>
+        <li>A built-in terminal in a bottom split (<kbd>Cmd-T</kbd>) with tabs, resizing, and syncing folders between the shell and the panels.</li>
+        <li>A viewer with hex mode, wrap, go-to and search, and an editor with undo, search and replace.</li>
+        <li>Quick View (<kbd>Ctrl-Q</kbd>) and Info (<kbd>Ctrl-L</kbd>) panels, archives (zip and tar), find files, folder hotlist and history.</li>
+        <li>Four colour themes: Classic Blue, Midnight, Amber and Navy.</li>
+        <li>Mac touches: Trash, Quick Look, Finder drag and drop, APFS clones for fast copies, and <kbd>Cmd-1</kbd>…<kbd>Cmd-0</kbd> as F-keys on laptops.</li>
+      </ul>
+      <p class="links"><a href="https://github.com/ehsanhaque/retrodir/releases/tag/v1.0">Download 1.0 on GitHub</a></p>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="disclaimer"><strong>RetroDir is an experimental, non-commercial project built with AI (Claude Code).</strong>
+      Original code and artwork; not affiliated with or endorsed by any other file manager or its owners.
+      Provided as is, without warranty. It can move and delete files, so keep backups.</p>
+    <p>© 2026 Ehsan Haque · Released under the <a href="https://github.com/ehsanhaque/retrodir/blob/main/LICENSE">MIT licence</a> ·
+      Terminal emulation by <a href="https://github.com/migueldeicaza/SwiftTerm">SwiftTerm</a> (MIT)</p>
+  </div>
+  <nav class="fkeys" aria-label="Footer">
+    <a href="./"><span>1</span><b>Home</b></a>
+    <a href="./#features"><span>2</span><b>Features</b></a>
+    <a href="./#screenshots"><span>3</span><b>View</b></a>
+    <a href="./#download"><span>4</span><b>Download</b></a>
+    <a href="releases.html"><span>5</span><b>Releases</b></a>
+    <a href="https://github.com/ehsanhaque/retrodir"><span>6</span><b>GitHub</b></a>
+  </nav>
+</footer>
+
+<script>
+  const clock = document.getElementById('clock');
+  const tick = () => {
+    const d = new Date();
+    clock.textContent = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+  };
+  tick(); setInterval(tick, 10000);
+</script>
+</body>
+</html>
