@@ -159,3 +159,6 @@ dialog img { max-width: 94vw; max-height: 90vh; width: auto; cursor: zoom-out; }
 .release li { margin: 6px 0; color: #e8e8ff; }
 .release li kbd { font: 13px/1 var(--mono); color: var(--yellow); background: rgba(0, 0, 0, 0.35); padding: 2px 5px; border: 1px solid rgba(255, 255, 85, 0.35); }
 .release .links { margin-top: 14px; font-size: 15px; }
+
+/* Version tag inside download buttons */
+.btn .ver { font-weight: 400; opacity: 0.75; margin-left: 4px; }
