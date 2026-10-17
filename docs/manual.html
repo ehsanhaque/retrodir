@@ -439,6 +439,32 @@
   const small = matchMedia('(max-width: 900px)');
   if (small.matches) toc.open = false;
   toc.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { if (small.matches) toc.open = false; }));
+
+  // Highlight the section being read in the contents list (and name it in the collapsed bar on phones)
+  const links = [...toc.querySelectorAll('a')];
+  const sections = links.map(a => document.querySelector(a.getAttribute('href')));
+  const label = toc.querySelector('summary');
+  const list = toc.querySelector('ol');
+  let current = -1;
+  const update = () => {
+    const line = 120;   // just below the sticky menu bar
+    let i = 0;
+    sections.forEach((s, j) => { if (s.getBoundingClientRect().top <= line) i = j; });
+    if (innerHeight + scrollY >= document.documentElement.scrollHeight - 4) i = sections.length - 1;
+    if (i === current) return;
+    current = i;
+    links.forEach((a, j) => a.toggleAttribute('aria-current', j === i));
+    label.textContent = 'Contents · ' + links[i].textContent;
+    // keep the highlighted entry visible when the list itself scrolls
+    const a = links[i], box = toc;
+    if (box.scrollHeight > box.clientHeight) {
+      const top = a.getBoundingClientRect().top - box.getBoundingClientRect().top + box.scrollTop;
+      if (top < box.scrollTop || top > box.scrollTop + box.clientHeight - 30) box.scrollTop = top - box.clientHeight / 2;
+    }
+  };
+  addEventListener('scroll', update, { passive: true });
+  addEventListener('resize', update);
+  update();
 </script>
 </body>
 </html>
