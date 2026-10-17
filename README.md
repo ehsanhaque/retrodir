@@ -30,3 +30,9 @@ the app bundle ships both licences in `Contents/Resources/LICENSES.txt` (Options
 the keychain, packages `build/RetroDir.dmg`, notarizes it with the `retrodir-notary` notarytool profile and
 staples the ticket. Upload the DMG to a GitHub Release as `RetroDir.dmg` so the website's download link
 (`releases/latest/download/RetroDir.dmg`) keeps working.
+
+## Website
+
+The site in `docs/` is served by GitHub Pages at https://retrodir.app/. After editing `docs/style.css`, run
+`tools/bump_css.sh` so browsers pick up the new stylesheet. `tools/make_demo.sh` creates the placeholder
+folder used for screenshots.

@@ -12,7 +12,7 @@
 <link rel="canonical" href="https://retrodir.app/manual.html">
 <link rel="icon" type="image/png" href="img/favicon.png">
 <link rel="apple-touch-icon" href="img/icon.png">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=8c79fa3b">
 </head>
 <body>
 
@@ -440,10 +440,9 @@
   if (small.matches) toc.open = false;
   toc.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { if (small.matches) toc.open = false; }));
 
-  // Highlight the section being read in the contents list (and name it in the collapsed bar on phones)
+  // Highlight the section being read in the contents list
   const links = [...toc.querySelectorAll('a')];
   const sections = links.map(a => document.querySelector(a.getAttribute('href')));
-  const label = toc.querySelector('summary');
   const list = toc.querySelector('ol');
   let current = -1;
   const update = () => {
@@ -454,7 +453,6 @@
     if (i === current) return;
     current = i;
     links.forEach((a, j) => a.toggleAttribute('aria-current', j === i));
-    label.textContent = 'Contents · ' + links[i].textContent;
     // keep the highlighted entry visible when the list itself scrolls
     const a = links[i], box = toc;
     if (box.scrollHeight > box.clientHeight) {
