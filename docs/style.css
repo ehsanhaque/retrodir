@@ -210,4 +210,4 @@ dialog img { max-width: 94vw; max-height: 90vh; width: auto; cursor: zoom-out; }
 .toc a[aria-current] { color: var(--black); background: var(--cyan); padding: 1px 4px; margin-left: -4px; }
 .toc li:has(a[aria-current])::marker { color: var(--cyan); }
 
-.menubar a[aria-current="page"] { background: var(--black); color: var(--white); }
+.menubar a[aria-current] { background: var(--black); color: var(--white); }

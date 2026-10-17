@@ -14,7 +14,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" href="img/favicon.png">
 <link rel="apple-touch-icon" href="img/icon.png">
-<link rel="stylesheet" href="style.css?v=6b0d51c0">
+<link rel="stylesheet" href="style.css?v=ca78e375">
 </head>
 <body>
 
@@ -48,7 +48,7 @@
 </header>
 
 <main>
-<section id="features">
+<section id="features" data-nav="features">
   <div class="wrap">
     <h2>Two panels. Ten function keys. No clutter.</h2>
     <p class="lead">RetroDir brings the classic orthodox file manager layout to the Mac: two folders side by side, everything on the keyboard, and a text-mode look that stays out of your way.</p>
@@ -70,7 +70,7 @@
   </div>
 </section>
 
-<section id="screenshots">
+<section id="screenshots" data-nav="screenshots">
   <div class="wrap">
     <h2>A closer look</h2>
     <p class="lead">Every screen is drawn on a character grid, just like the originals, but with crisp Retina text.</p>
@@ -106,7 +106,7 @@
   </div>
 </section>
 
-<section id="themes">
+<section id="themes" data-nav="screenshots">
   <div class="wrap">
     <h2>Four colour themes</h2>
     <p class="lead">Classic Blue is the default. Switch any time from Options in the menu.</p>
@@ -119,7 +119,7 @@
   </div>
 </section>
 
-<section id="keys">
+<section id="keys" data-nav="">
   <div class="wrap">
     <h2>The essentials</h2>
     <p class="lead">Press <kbd>F1</kbd> in the app for the full keyboard reference. Everything works with the mouse too.</p>
@@ -140,7 +140,7 @@
   </div>
 </section>
 
-<section id="download">
+<section id="download" data-nav="download">
   <div class="wrap">
     <h2>Get RetroDir</h2>
     <p class="lead">RetroDir is free. Download a release, or build it yourself in under a minute.</p>
@@ -203,6 +203,19 @@ open build/RetroDir.app</pre>
       document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
     });
   }));
+
+  // Highlight the menu-bar item for the section on screen
+  const navLinks = [...document.querySelectorAll('.menubar a[href^="#"]')];
+  const navSections = [...document.querySelectorAll('section[data-nav]')];
+  const spy = () => {
+    let nav = '';
+    navSections.forEach(s => { if (s.getBoundingClientRect().top <= 120) nav = s.dataset.nav; });
+    if (innerHeight + scrollY >= document.documentElement.scrollHeight - 4) nav = 'download';
+    navLinks.forEach(a => a.toggleAttribute('aria-current', nav !== '' && a.getAttribute('href') === '#' + nav));
+  };
+  addEventListener('scroll', spy, { passive: true });
+  addEventListener('resize', spy);
+  spy();
 
   // Click a screenshot to enlarge it
   const box = document.getElementById('lightbox'), big = box.querySelector('img');
