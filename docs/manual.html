@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RetroDir Manual</title>
+<meta name="description" content="The complete RetroDir manual: panels, file operations, viewer and editor, archives, search, the command line, the built-in terminal, menus and settings, with screenshots.">
+<meta property="og:title" content="RetroDir manual">
+<meta property="og:description" content="Every RetroDir feature, with screenshots.">
+<meta property="og:image" content="https://retrodir.app/img/hero.png">
+<meta property="og:url" content="https://retrodir.app/manual.html">
+<link rel="canonical" href="https://retrodir.app/manual.html">
+<link rel="icon" type="image/png" href="img/favicon.png">
+<link rel="apple-touch-icon" href="img/icon.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="menubar" aria-label="Main">
+  <div class="wrap">
+    <a class="brand" href="./"><img src="img/favicon.png" alt="">RetroDir</a>
+    <a class="opt" href="./#features">Features</a>
+    <a class="opt" href="manual.html" aria-current="page">Manual</a>
+    <a class="opt" href="releases.html">Release notes</a>
+    <a href="./#download">Download</a>
+    <a href="https://github.com/ehsanhaque/retrodir">GitHub</a>
+    <span class="spacer"></span>
+    <span class="clock" id="clock" aria-hidden="true"></span>
+  </div>
+</nav>
+
+<div class="wrap manual">
+  <aside class="toc" aria-label="Contents">
+    <details open>
+      <summary>Contents</summary>
+      <ol>
+        <li><a href="#start">Getting started</a></li>
+        <li><a href="#panels">The panels</a></li>
+        <li><a href="#selecting">Selecting files</a></li>
+        <li><a href="#fileops">File operations</a></li>
+        <li><a href="#finder">Clipboard &amp; Finder</a></li>
+        <li><a href="#viewer">Viewer</a></li>
+        <li><a href="#editor">Editor</a></li>
+        <li><a href="#quickview">Info &amp; Quick View</a></li>
+        <li><a href="#archives">Archives</a></li>
+        <li><a href="#finding">Finding &amp; navigating</a></li>
+        <li><a href="#cmdline">Command line &amp; console</a></li>
+        <li><a href="#terminal">Built-in terminal</a></li>
+        <li><a href="#usermenu">User menu</a></li>
+        <li><a href="#menus">Pull-down menus</a></li>
+        <li><a href="#settings">Themes &amp; settings</a></li>
+        <li><a href="#help">Help &amp; licences</a></li>
+        <li><a href="#keys">Keyboard reference</a></li>
+      </ol>
+    </details>
+  </aside>
+
+  <main class="doc">
+    <h1>RetroDir manual</h1>
+    <p class="lead">Everything RetroDir can do, one feature at a time. Press <kbd>F1</kbd> inside the app any time for the built-in keyboard reference. This manual covers version <span class="ver">v1.0.1</span>.</p>
+
+    <!-- 1 -->
+    <section id="start">
+      <h2>1. Getting started</h2>
+      <p>Download <a href="https://github.com/ehsanhaque/retrodir/releases/latest/download/RetroDir.dmg">RetroDir.dmg</a>, open it and drag RetroDir to Applications. The first time you open it, macOS asks you to confirm an app downloaded from the internet; click <b>Open</b>. RetroDir is signed and notarized, so this happens only once.</p>
+      <figure><img src="img/manual/panels.png" width="1686" height="952" loading="lazy" alt="The main window: menu bar, two file panels, command line and function-key bar">
+        <figcaption>The main window. From top to bottom: the menu bar, two file panels, the command line and the function-key bar.</figcaption></figure>
+      <ul>
+        <li><b>Two panels.</b> The active panel has the highlighted cursor bar. Most commands act on the active panel, and copy or move into the other one.</li>
+        <li><b>Function keys.</b> The bottom bar shows what <kbd>F1</kbd>–<kbd>F10</kbd> do. Hold <kbd>Shift</kbd>, <kbd>Option</kbd> or <kbd>Ctrl</kbd> to see the alternate commands. On a MacBook, hold <kbd>fn</kbd>, or use <kbd>Cmd-1</kbd>…<kbd>Cmd-0</kbd> as <kbd>F1</kbd>…<kbd>F10</kbd> (<kbd>Cmd-Shift-6</kbd> = <kbd>Shift-F6</kbd>, <kbd>Cmd-Option-7</kbd> = <kbd>Alt-F7</kbd>).</li>
+        <li><b>"Alt" means the Option key</b> throughout RetroDir and this manual.</li>
+        <li><b>The mouse works too.</b> Click to select, double-click to open, right-click to toggle selection, scroll with the wheel, and click the menu bar or the key bar.</li>
+      </ul>
+    </section>
+
+    <!-- 2 -->
+    <section id="panels">
+      <h2>2. The panels</h2>
+      <h3>Moving around</h3>
+      <table class="keytable">
+        <tr><td><kbd>Tab</kbd></td><td>Switch between the left and right panel</td></tr>
+        <tr><td><kbd>Enter</kbd></td><td>Open a folder, run a script, or open a file in its default app</td></tr>
+        <tr><td><kbd>Backspace</kbd> / <kbd>Cmd-Up</kbd></td><td>Go to the parent folder (Backspace when the command line is empty)</td></tr>
+        <tr><td><kbd>Cmd-Down</kbd></td><td>Enter a folder or app bundle</td></tr>
+        <tr><td><kbd>Cmd-[</kbd></td><td>Back to the previous folder</td></tr>
+        <tr><td><kbd>Home</kbd> / <kbd>End</kbd></td><td>First / last entry</td></tr>
+        <tr><td><kbd>Left</kbd> / <kbd>Right</kbd></td><td>Page up / down (move between columns in brief mode)</td></tr>
+        <tr><td><kbd>Ctrl-\</kbd></td><td>Go to the root folder</td></tr>
+        <tr><td><kbd>Ctrl-U</kbd></td><td>Swap the two panels</td></tr>
+        <tr><td><kbd>Ctrl-=</kbd></td><td>Show the same folder in the other panel</td></tr>
+        <tr><td><kbd>Ctrl-R</kbd></td><td>Re-read both panels</td></tr>
+      </table>
+
+      <h3>Brief and full views</h3>
+      <p><kbd>Ctrl-2</kbd> shows the full view with size, date and time columns. <kbd>Ctrl-1</kbd> switches to brief view, which lists names only in several columns, so you see more files at once.</p>
+      <figure><img src="img/manual/brief.png" width="1686" height="952" loading="lazy" alt="Left panel in brief view showing names in columns">
+        <figcaption>Brief view in the left panel, full view in the right.</figcaption></figure>
+
+      <h3>Panel menu and sorting</h3>
+      <p>Press <kbd>F9</kbd> and choose <b>Left</b> or <b>Right</b> for the panel menu. Sort by name, extension, time, size or unsorted with <kbd>Ctrl-F3</kbd>…<kbd>Ctrl-F7</kbd>; <kbd>Ctrl-F9</kbd> reverses the order. Choosing the current sort again also reverses it.</p>
+      <figure><img src="img/manual/menu-default.png" width="1686" height="952" loading="lazy" alt="The Left panel menu with view, sort and filter options">
+        <figcaption>The panel menu: view mode, Info and Quick View, sort order, filter, re-read, change volume and go to folder.</figcaption></figure>
+
+      <h3>Hidden files</h3>
+      <p><kbd>Ctrl-H</kbd> shows or hides hidden files (names starting with a dot, and files macOS marks hidden). Hidden entries are drawn dimmed.</p>
+      <figure><img src="img/manual/hidden.png" width="1686" height="952" loading="lazy" alt="Panels showing hidden files such as .settings, .git and .gitignore">
+        <figcaption>Hidden files shown in both panels.</figcaption></figure>
+
+      <h3>Filter</h3>
+      <p><kbd>Ctrl-F</kbd> limits the panel to files matching one or more masks, for example <code>*.swift,*.md</code>. Choose <b>Clear</b> to show everything again.</p>
+      <figure><img src="img/manual/filter.png" width="1686" height="952" loading="lazy" alt="The Filter dialog"></figure>
+
+      <h3>Go to a folder</h3>
+      <p><kbd>Ctrl-G</kbd> jumps to any folder by typing its path. <code>~</code>, absolute and relative paths all work.</p>
+      <figure><img src="img/manual/goto.png" width="1686" height="952" loading="lazy" alt="The Go to folder dialog with a path typed in"></figure>
+
+      <h3>Volumes and places</h3>
+      <p><kbd>Alt-F1</kbd> (left panel) and <kbd>Alt-F2</kbd> (right panel) list the root folder, your home folder and common places, iCloud Drive, and every mounted volume with its free space.</p>
+      <figure><img src="img/manual/volumes.png" width="1686" height="952" loading="lazy" alt="The volume and places chooser for the left panel">
+        <figcaption>The chooser for the left panel. (Other mounted volumes would appear below Macintosh HD.)</figcaption></figure>
+    </section>
+
+    <!-- 3 -->
+    <section id="selecting">
+      <h2>3. Selecting files</h2>
+      <p>Commands act on the selected files, or on the file under the cursor if nothing is selected. Selected files are shown in yellow, and the panel footer totals their size.</p>
+      <table class="keytable">
+        <tr><td><kbd>Insert</kbd> / <kbd>Space</kbd> / <kbd>Shift-Down</kbd></td><td>Toggle selection and move down</td></tr>
+        <tr><td><kbd>+</kbd></td><td>Select a group by mask</td></tr>
+        <tr><td><kbd>-</kbd></td><td>Unselect a group by mask</td></tr>
+        <tr><td><kbd>*</kbd></td><td>Invert the selection</td></tr>
+        <tr><td><kbd>Cmd-A</kbd></td><td>Select all</td></tr>
+        <tr><td><kbd>Esc</kbd></td><td>Clear the command line, then show the panels, then clear the selection</td></tr>
+      </table>
+      <figure><img src="img/manual/select-group.png" width="1686" height="952" loading="lazy" alt="The Select dialog with the mask *.md">
+        <figcaption>Selecting a group with <kbd>+</kbd>. Tick "Include folders" to select matching folders too.</figcaption></figure>
+
+      <h3>Quick search</h3>
+      <p>Hold <kbd>Option</kbd> and type letters, or press <kbd>Ctrl-S</kbd> and type, to jump to the first matching name. <kbd>Ctrl-S</kbd> again finds the next match.</p>
+      <figure><img src="img/manual/quicksearch.png" width="1686" height="952" loading="lazy" alt="Quick search box at the bottom of the panel with 'pho' typed, cursor on Photos"></figure>
+    </section>
+
+    <!-- 4 -->
+    <section id="fileops">
+      <h2>4. File operations</h2>
+      <table class="keytable">
+        <tr><td><kbd>F5</kbd></td><td>Copy to the other panel</td></tr>
+        <tr><td><kbd>Shift-F5</kbd></td><td>Copy within the same panel (duplicate)</td></tr>
+        <tr><td><kbd>F6</kbd></td><td>Rename or move to the other panel</td></tr>
+        <tr><td><kbd>Shift-F6</kbd></td><td>Rename in place</td></tr>
+        <tr><td><kbd>F7</kbd></td><td>Make a folder (<code>a/b/c</code> creates nested folders)</td></tr>
+        <tr><td><kbd>F8</kbd></td><td>Move to Trash</td></tr>
+        <tr><td><kbd>Shift-F8</kbd></td><td>Delete permanently, without the Trash</td></tr>
+        <tr><td><kbd>Shift-F4</kbd></td><td>Create a new file and open it in the editor</td></tr>
+      </table>
+
+      <h3>Copy</h3>
+      <p>The destination defaults to the other panel's folder; you can edit it before confirming. Copies use APFS clones when possible, so even large files copy instantly on the same disk, and they keep permissions, dates, extended attributes and ACLs.</p>
+      <figure><img src="img/manual/copy.png" width="1686" height="952" loading="lazy" alt="The Copy dialog for two selected items"></figure>
+      <p><b>When a file already exists</b>, RetroDir asks what to do: <b>Overwrite</b>, overwrite <b>All</b>, <b>Skip</b>, <b>Skip all</b>, keep the <b>Newer</b> file, or <b>Cancel</b>.</p>
+
+      <h3>Rename or move</h3>
+      <figure><img src="img/manual/move.png" width="1686" height="952" loading="lazy" alt="The Rename/Move dialog"></figure>
+
+      <h3>Make folder</h3>
+      <figure><img src="img/manual/mkdir.png" width="1686" height="952" loading="lazy" alt="The Make folder dialog creating nested folders"></figure>
+
+      <h3>Move to Trash</h3>
+      <p><kbd>F8</kbd> moves files to the Trash, so you can put them back from Finder. You can turn the confirmation off in <b>Options → Confirm delete</b>.</p>
+      <figure><img src="img/manual/delete.png" width="1686" height="952" loading="lazy" alt="The Move to Trash confirmation"></figure>
+
+      <h3>Attributes and symlinks</h3>
+      <p><b>Files → Attributes…</b> (also in the <a href="#usermenu">user menu</a>) changes permissions in octal, hides a file from Finder, and can apply changes to a folder's contents. <b>Files → Symlink in other panel</b> creates a symbolic link to the current file in the other panel.</p>
+      <figure><img src="img/manual/attributes.png" width="1686" height="952" loading="lazy" alt="The Attributes dialog with octal mode 644"></figure>
+    </section>
+
+    <!-- 5 -->
+    <section id="finder">
+      <h2>5. Clipboard &amp; Finder</h2>
+      <table class="keytable">
+        <tr><td><kbd>Cmd-C</kbd></td><td>Copy the full path(s) of the selection; Finder can also paste them as files</td></tr>
+        <tr><td><kbd>Cmd-Option-C</kbd></td><td>Copy file name(s) only</td></tr>
+        <tr><td><kbd>Cmd-V</kbd></td><td>Paste files copied in Finder into this panel</td></tr>
+        <tr><td><kbd>Shift-F3</kbd> / <kbd>Cmd-Y</kbd></td><td>Quick Look</td></tr>
+        <tr><td><kbd>Alt-F4</kbd></td><td>Open with the default macOS app</td></tr>
+        <tr><td><kbd>Cmd-R</kbd></td><td>Reveal in Finder</td></tr>
+        <tr><td><kbd>Cmd-I</kbd></td><td>Get Info</td></tr>
+        <tr><td><kbd>Ctrl-T</kbd></td><td>Open Terminal.app in the current folder</td></tr>
+        <tr><td>Drag &amp; drop</td><td>Drop files from Finder onto the window to copy or move them</td></tr>
+      </table>
+    </section>
+
+    <!-- 6 -->
+    <section id="viewer">
+      <h2>6. Viewer</h2>
+      <p><kbd>F3</kbd> opens the file under the cursor in a full-screen viewer. Large files open instantly because they are memory-mapped rather than loaded. Binary files open in hex automatically. On a folder, <kbd>F3</kbd> calculates its size instead (see <a href="#finding">Folder sizes</a>).</p>
+      <figure><img src="img/viewer.png" width="1754" height="884" loading="lazy" alt="The viewer showing a text file"></figure>
+      <figure><img src="img/manual/viewer-hex.png" width="1686" height="952" loading="lazy" alt="The viewer in hex mode showing a JPEG file">
+        <figcaption>Hex mode: offsets, bytes and characters side by side.</figcaption></figure>
+      <table class="keytable">
+        <tr><td><kbd>F2</kbd></td><td>Wrap long lines on or off</td></tr>
+        <tr><td><kbd>F4</kbd></td><td>Switch between text and hex</td></tr>
+        <tr><td><kbd>F5</kbd></td><td>Go to a line, a byte offset or a percentage</td></tr>
+        <tr><td><kbd>F7</kbd></td><td>Search; <kbd>Shift-F7</kbd> or <kbd>n</kbd> finds the next match</td></tr>
+        <tr><td>Arrows, <kbd>PgUp</kbd>, <kbd>PgDn</kbd>, <kbd>Home</kbd>, <kbd>End</kbd></td><td>Scroll</td></tr>
+        <tr><td><kbd>Esc</kbd> / <kbd>F3</kbd> / <kbd>F10</kbd></td><td>Close the viewer</td></tr>
+      </table>
+    </section>
+
+    <!-- 7 -->
+    <section id="editor">
+      <h2>7. Editor</h2>
+      <p><kbd>F4</kbd> opens the built-in editor for quick changes without leaving the keyboard. The status line shows the line, column, encoding and line endings. <kbd>Shift-F4</kbd> creates a new file and edits it.</p>
+      <figure><img src="img/editor.png" width="1754" height="884" loading="lazy" alt="The editor with Swift source code"></figure>
+      <figure><img src="img/manual/editor-search.png" width="1686" height="952" loading="lazy" alt="The editor's Search dialog">
+        <figcaption>Searching with <kbd>F7</kbd>. <kbd>F6</kbd> opens search and replace.</figcaption></figure>
+      <table class="keytable">
+        <tr><td><kbd>F2</kbd> / <kbd>Cmd-S</kbd></td><td>Save; <kbd>Shift-F2</kbd> saves as</td></tr>
+        <tr><td><kbd>F7</kbd> / <kbd>Cmd-F</kbd></td><td>Search; <kbd>Shift-F7</kbd> finds the next match</td></tr>
+        <tr><td><kbd>F6</kbd></td><td>Search and replace</td></tr>
+        <tr><td><kbd>F3</kbd></td><td>Start / stop marking a block</td></tr>
+        <tr><td><kbd>Shift</kbd>-arrows</td><td>Select text</td></tr>
+        <tr><td><kbd>Cmd-C</kbd> / <kbd>Cmd-X</kbd> / <kbd>Cmd-V</kbd></td><td>Copy, cut, paste</td></tr>
+        <tr><td><kbd>Cmd-Z</kbd> / <kbd>Cmd-Shift-Z</kbd></td><td>Undo / redo</td></tr>
+        <tr><td><kbd>F8</kbd> / <kbd>Ctrl-Y</kbd></td><td>Delete the line</td></tr>
+        <tr><td><kbd>Cmd-D</kbd></td><td>Duplicate the line</td></tr>
+        <tr><td><kbd>Tab</kbd> / <kbd>Shift-Tab</kbd></td><td>Indent / unindent</td></tr>
+        <tr><td><kbd>Cmd-A</kbd></td><td>Select all</td></tr>
+        <tr><td><kbd>Esc</kbd> / <kbd>F10</kbd></td><td>Close (asks to save changes)</td></tr>
+      </table>
+    </section>
+
+    <!-- 8 -->
+    <section id="quickview">
+      <h2>8. Info &amp; Quick View</h2>
+      <h3>Info panel</h3>
+      <p><kbd>Ctrl-L</kbd> turns the other panel into an Info panel: macOS version and memory, the volume's size and free space with a usage bar, and the current folder's contents and size. Press <kbd>Ctrl-L</kbd> again to go back.</p>
+      <figure><img src="img/manual/info.png" width="1686" height="952" loading="lazy" alt="The Info panel showing system, volume and folder details">
+        <figcaption>The Info panel. (The user name is replaced in this screenshot.)</figcaption></figure>
+
+      <h3>Quick View</h3>
+      <p><kbd>Ctrl-Q</kbd> previews the file under the cursor in the other panel, and follows the cursor as you move. It shows text, hex for binary files, images, and the contents of zip and tar archives.</p>
+      <div class="pair">
+        <figure><img src="img/manual/quickview-text.png" width="1686" height="952" loading="lazy" alt="Quick View showing a Markdown file"><figcaption>Text</figcaption></figure>
+        <figure><img src="img/quickview.png" width="1754" height="884" loading="lazy" alt="Quick View showing an image"><figcaption>Images</figcaption></figure>
+      </div>
+      <figure><img src="img/manual/quickview-archive.png" width="1686" height="952" loading="lazy" alt="Quick View listing the contents of a zip archive">
+        <figcaption>Archive contents, without unpacking.</figcaption></figure>
+    </section>
+
+    <!-- 9 -->
+    <section id="archives">
+      <h2>9. Archives</h2>
+      <p><kbd>Alt-F5</kbd> packs the selected files. The format follows the archive name's extension: <code>.zip</code>, <code>.tar</code>, <code>.tar.gz</code> / <code>.tgz</code>, <code>.tar.bz2</code> or <code>.tar.xz</code>. <kbd>Alt-F6</kbd> unpacks the archive under the cursor into the other panel's folder.</p>
+      <div class="pair">
+        <figure><img src="img/manual/pack.png" width="1686" height="952" loading="lazy" alt="The Pack dialog"><figcaption>Pack</figcaption></figure>
+        <figure><img src="img/manual/unpack.png" width="1686" height="952" loading="lazy" alt="The Unpack dialog"><figcaption>Unpack</figcaption></figure>
+      </div>
+    </section>
+
+    <!-- 10 -->
+    <section id="finding">
+      <h2>10. Finding &amp; navigating</h2>
+      <h3>Find files</h3>
+      <p><kbd>Alt-F7</kbd> searches the current folder for file names matching a mask, optionally containing some text, with options for subfolders, case sensitivity and hidden files.</p>
+      <figure><img src="img/manual/find.png" width="1686" height="952" loading="lazy" alt="The Find file dialog"></figure>
+
+      <h3>Folder history and hotlist</h3>
+      <p><kbd>Alt-F12</kbd> lists the folders you've visited recently. <kbd>Alt-F10</kbd> or <kbd>Ctrl-D</kbd> opens the folder hotlist, your list of favourite folders: <kbd>Insert</kbd> or <kbd>Cmd-N</kbd> adds the current folder, <kbd>Delete</kbd> removes one, <kbd>Enter</kbd> goes there.</p>
+      <div class="pair">
+        <figure><img src="img/manual/folder-history.png" width="1686" height="952" loading="lazy" alt="The Folder history list"><figcaption>Folder history</figcaption></figure>
+        <figure><img src="img/manual/hotlist.png" width="1686" height="952" loading="lazy" alt="The Folder hotlist"><figcaption>Folder hotlist</figcaption></figure>
+      </div>
+
+      <h3>Compare folders</h3>
+      <p><b>Commands → Compare folders</b> compares the two panels and selects the files on each side that are different or newer, ready to copy across.</p>
+      <figure><img src="img/manual/compare.png" width="1686" height="952" loading="lazy" alt="Two panels after Compare folders, with differing files selected">
+        <figcaption>After comparing, the files that differ are selected in yellow, and the command line summarises the result.</figcaption></figure>
+
+      <h3 id="sizes">Folder sizes</h3>
+      <p><kbd>F3</kbd> on a folder calculates its total size and shows it in the size column. <b>Commands → Calculate folder sizes</b> does it for every selected folder.</p>
+      <figure><img src="img/manual/folder-size.png" width="1686" height="952" loading="lazy" alt="The Photos folder showing its calculated size"></figure>
+    </section>
+
+    <!-- 11 -->
+    <section id="cmdline">
+      <h2>11. Command line &amp; console</h2>
+      <p>Just start typing in the panels: your text goes to the command line, and <kbd>Enter</kbd> runs it with zsh in the active panel's folder. The output appears in the console behind the panels. <kbd>Ctrl-O</kbd> hides or shows the panels so you can read it. <code>cd</code> changes the panel's folder (<code>cd -</code>, <code>cd ~</code>, <code>cd ..</code> work).</p>
+      <figure><img src="img/manual/console.png" width="1686" height="952" loading="lazy" alt="The console showing the output of ls and echo"></figure>
+      <table class="keytable">
+        <tr><td><kbd>Ctrl-O</kbd></td><td>Hide / show the panels to see command output</td></tr>
+        <tr><td><kbd>Ctrl-E</kbd> / <kbd>Ctrl-X</kbd></td><td>Previous / next command (also <kbd>Option-Up</kbd> / <kbd>Option-Down</kbd>)</td></tr>
+        <tr><td><kbd>Alt-F8</kbd></td><td>Command history</td></tr>
+        <tr><td><kbd>Ctrl-Enter</kbd></td><td>Insert the file name under the cursor</td></tr>
+        <tr><td><kbd>Ctrl-[</kbd> / <kbd>Ctrl-]</kbd></td><td>Insert the left / right panel's path</td></tr>
+        <tr><td><kbd>Ctrl-C</kbd></td><td>Interrupt the running command</td></tr>
+        <tr><td><kbd>PgUp</kbd> / <kbd>PgDn</kbd></td><td>Scroll the console while the panels are hidden</td></tr>
+        <tr><td><code>cls</code></td><td>Clear the console</td></tr>
+      </table>
+      <figure><img src="img/manual/cmd-history.png" width="1686" height="952" loading="lazy" alt="The Command history list over the console">
+        <figcaption>Command history: <kbd>Enter</kbd> puts the command on the command line, <kbd>Shift-Enter</kbd> runs it straight away.</figcaption></figure>
+      <p class="note-box">Interactive programs such as <code>vim</code>, <code>top</code> and <code>ssh</code> need a real terminal. Use the <a href="#terminal">built-in terminal</a> for those.</p>
+    </section>
+
+    <!-- 12 -->
+    <section id="terminal">
+      <h2>12. Built-in terminal</h2>
+      <p><kbd>Cmd-T</kbd> splits the window: both panels stay on top and a full terminal opens underneath. Each tab runs your login shell, so <code>~/.zprofile</code>, <code>~/.zshrc</code>, Homebrew paths, <code>~/.ssh</code> and ssh-agent all work. It's full xterm-256color emulation: <code>vim</code>, <code>htop</code>, <code>ssh</code>, <code>tmux</code>, mouse support and true colour.</p>
+      <figure><img src="img/terminal.png" width="1754" height="1292" loading="lazy" alt="Panels above a terminal with two tabs"></figure>
+
+      <h3>Tabs and working folders</h3>
+      <p><b>Each tab keeps its own working folder.</b> Browsing in the panels never moves a shell. When you press <kbd>Cmd-T</kbd> from a panel, RetroDir switches to a tab that's already in that panel's folder, or opens a new tab there, so a shell that's busy with something else (an ssh session, an editor) is never touched. With the terminal focused, <kbd>Cmd-T</kbd> opens a new tab in the current tab's folder.</p>
+      <p>To sync on purpose: <kbd>Cmd-Shift-D</kbd> moves the current shell to the active panel's folder, and <kbd>Cmd-Shift-P</kbd> moves the active panel to the shell's folder.</p>
+
+      <h3>Renaming tabs</h3>
+      <p>Tabs are named after the shell and its folder. To give a tab your own name, press <kbd>Cmd-Shift-R</kbd> or double-click the tab. <b>Reset</b> goes back to the automatic name.</p>
+      <div class="pair">
+        <figure><img src="img/manual/terminal-rename.png" width="1686" height="1156" loading="lazy" alt="The Rename tab dialog"><figcaption>Renaming a tab</figcaption></figure>
+        <figure><img src="img/manual/terminal-tabs.png" width="1686" height="1156" loading="lazy" alt="Two terminal tabs, the first named 'retrodir repo'"><figcaption>Tab 1 renamed to "retrodir repo"</figcaption></figure>
+      </div>
+
+      <h3>Terminal keys</h3>
+      <table class="keytable">
+        <tr><td><kbd>Cmd-T</kbd></td><td>From a panel: open the terminal in that panel's folder. In the terminal: new tab</td></tr>
+        <tr><td><kbd>Cmd-J</kbd></td><td>Switch focus between the panels and the terminal</td></tr>
+        <tr><td><kbd>Cmd-Shift-J</kbd></td><td>Hide / show the terminal (sessions keep running)</td></tr>
+        <tr><td><kbd>Cmd-W</kbd></td><td>Close the current tab (closing the last one hides the terminal)</td></tr>
+        <tr><td><kbd>Cmd-Shift-[</kbd> / <kbd>Cmd-Shift-]</kbd></td><td>Previous / next tab (also <kbd>Ctrl-Tab</kbd>)</td></tr>
+        <tr><td><kbd>Cmd-1</kbd>…<kbd>Cmd-9</kbd></td><td>Go to tab N (while the terminal is focused)</td></tr>
+        <tr><td><kbd>Cmd-Option-Shift-Left/Right</kbd></td><td>Move the current tab left / right</td></tr>
+        <tr><td><kbd>Cmd-Shift-R</kbd></td><td>Rename the tab (or double-click it)</td></tr>
+        <tr><td><kbd>Cmd-Option-Up/Down</kbd></td><td>Make the terminal taller / shorter (or drag the tab bar)</td></tr>
+        <tr><td><kbd>Cmd-Shift-D</kbd></td><td><code>cd</code> the terminal to the active panel's folder</td></tr>
+        <tr><td><kbd>Cmd-Shift-P</kbd></td><td>Move the active panel to the terminal's folder</td></tr>
+        <tr><td><kbd>Cmd-K</kbd></td><td>Clear the terminal screen</td></tr>
+        <tr><td><kbd>Cmd-C</kbd> / <kbd>Cmd-V</kbd></td><td>Copy the selection / paste</td></tr>
+        <tr><td><kbd>Ctrl-Enter</kbd> (in panels)</td><td>Type the path of the file under the cursor into the shell</td></tr>
+      </table>
+      <p>While the terminal is open, typing in the panels goes straight to the shell.</p>
+    </section>
+
+    <!-- 13 -->
+    <section id="usermenu">
+      <h2>13. User menu</h2>
+      <p><kbd>F2</kbd> opens a menu of handy actions for the file under the cursor or the selection: reveal in Finder, open Terminal.app here, Quick Look, open with the default app, copy paths or names, Get Info, attributes, symlink, compress or extract, folder sizes, compare folders, disk usage (<code>du</code>), <code>git status</code>, <code>git log</code>, make executable, a SHA-256 checksum, and a new file.</p>
+      <figure><img src="img/manual/usermenu.png" width="1686" height="952" loading="lazy" alt="The User menu"></figure>
+    </section>
+
+    <!-- 14 -->
+    <section id="menus">
+      <h2>14. Pull-down menus</h2>
+      <p><kbd>F9</kbd> opens the menu bar; use the arrow keys and <kbd>Enter</kbd>, or click. Every command shows its shortcut. <b>Left</b> and <b>Right</b> are the <a href="#panels">panel menus</a>.</p>
+      <figure><img src="img/manual/menu-files.png" width="1686" height="952" loading="lazy" alt="The Files menu">
+        <figcaption><b>Files</b>: everything you can do to files, including selection and archives.</figcaption></figure>
+      <figure><img src="img/manual/menu-commands.png" width="1686" height="952" loading="lazy" alt="The Commands menu">
+        <figcaption><b>Commands</b>: finding, histories, the hotlist, panel arrangement, compare and terminal commands.</figcaption></figure>
+    </section>
+
+    <!-- 15 -->
+    <section id="settings">
+      <h2>15. Themes &amp; settings</h2>
+      <p>The <b>Options</b> menu holds the colour theme, font size (<kbd>Cmd-+</kbd> / <kbd>Cmd--</kbd>), hidden files, and the delete and quit confirmations. RetroDir remembers your panels, sort order, histories, hotlist, theme and terminal size; <b>Save setup</b> (<kbd>Shift-F9</kbd>) saves them right away.</p>
+      <figure><img src="img/manual/menu-options.png" width="1686" height="952" loading="lazy" alt="The Options menu with themes and settings"></figure>
+      <div class="themes">
+        <figure><img src="img/hero.png" width="1754" height="884" loading="lazy" alt="Classic Blue theme"><figcaption>Classic Blue</figcaption></figure>
+        <figure><img src="img/theme-1.png" width="1754" height="884" loading="lazy" alt="Midnight theme"><figcaption>Midnight</figcaption></figure>
+        <figure><img src="img/theme-2.png" width="1754" height="884" loading="lazy" alt="Amber theme"><figcaption>Amber</figcaption></figure>
+        <figure><img src="img/theme-3.png" width="1754" height="884" loading="lazy" alt="Navy theme"><figcaption>Navy</figcaption></figure>
+      </div>
+    </section>
+
+    <!-- 16 -->
+    <section id="help">
+      <h2>16. Help &amp; licences</h2>
+      <p><kbd>F1</kbd> shows the complete keyboard reference inside the app. <b>Options → About RetroDir</b> shows the version and disclaimer, and <b>Options → Licences</b> shows the full MIT licence texts for RetroDir and SwiftTerm.</p>
+      <figure><img src="img/manual/help.png" width="1686" height="952" loading="lazy" alt="The in-app keyboard reference"></figure>
+    </section>
+
+    <!-- 17 -->
+    <section id="keys">
+      <h2>17. Keyboard reference</h2>
+      <p>The function keys at a glance. Every other shortcut is in the section for its feature above.</p>
+      <table class="keytable grid">
+        <tr><th>Key</th><th>Plain</th><th>Shift</th><th>Alt (Option)</th></tr>
+        <tr><td><kbd>F1</kbd></td><td>Help</td><td></td><td>Left panel: volume / place</td></tr>
+        <tr><td><kbd>F2</kbd></td><td>User menu</td><td></td><td>Right panel: volume / place</td></tr>
+        <tr><td><kbd>F3</kbd></td><td>View (folder: size)</td><td>Quick Look</td><td></td></tr>
+        <tr><td><kbd>F4</kbd></td><td>Edit</td><td>New file</td><td>Open with default app</td></tr>
+        <tr><td><kbd>F5</kbd></td><td>Copy</td><td>Duplicate</td><td>Pack</td></tr>
+        <tr><td><kbd>F6</kbd></td><td>Rename / move</td><td>Rename in place</td><td>Unpack</td></tr>
+        <tr><td><kbd>F7</kbd></td><td>Make folder</td><td></td><td>Find files</td></tr>
+        <tr><td><kbd>F8</kbd></td><td>Move to Trash</td><td>Delete permanently</td><td>Command history</td></tr>
+        <tr><td><kbd>F9</kbd></td><td>Pull-down menu</td><td>Save setup</td><td></td></tr>
+        <tr><td><kbd>F10</kbd></td><td>Quit</td><td></td><td>Folder hotlist</td></tr>
+        <tr><td><kbd>F12</kbd></td><td></td><td></td><td>Folder history</td></tr>
+      </table>
+      <p>With <kbd>Ctrl</kbd>: <kbd>Ctrl-F3</kbd>…<kbd>Ctrl-F7</kbd> sort by name, extension, time, size or unsorted, and <kbd>Ctrl-F9</kbd> reverses the order.</p>
+    </section>
+  </main>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p class="disclaimer"><strong>RetroDir is an experimental, non-commercial project built with AI (Claude Code).</strong>
+      Original code and artwork; not affiliated with or endorsed by any other file manager or its owners.
+      Provided as is, without warranty. It can move and delete files, so keep backups.</p>
+    <p>© 2026 Ehsan Haque · Released under the <a href="https://github.com/ehsanhaque/retrodir/blob/main/LICENSE">MIT licence</a> ·
+      Terminal emulation by <a href="https://github.com/migueldeicaza/SwiftTerm">SwiftTerm</a> (MIT)</p>
+  </div>
+  <nav class="fkeys" aria-label="Footer">
+    <a href="./"><span>1</span><b>Home</b></a>
+    <a href="./#features"><span>2</span><b>Features</b></a>
+    <a href="manual.html"><span>3</span><b>Manual</b></a>
+    <a href="./#download"><span>4</span><b>Download</b></a>
+    <a href="releases.html"><span>5</span><b>Releases</b></a>
+    <a href="https://github.com/ehsanhaque/retrodir"><span>6</span><b>GitHub</b></a>
+  </nav>
+</footer>
+
+<dialog id="lightbox" aria-label="Screenshot"><img alt=""></dialog>
+
+<script>
+  const clock = document.getElementById('clock');
+  const tick = () => {
+    const d = new Date();
+    clock.textContent = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+  };
+  tick(); setInterval(tick, 10000);
+
+  // Click a screenshot to enlarge it
+  const box = document.getElementById('lightbox'), big = box.querySelector('img');
+  document.querySelectorAll('.doc figure img').forEach(img => {
+    img.addEventListener('click', () => { big.src = img.src; big.alt = img.alt; box.showModal(); });
+  });
+  box.addEventListener('click', () => box.close());
+
+  // On small screens the contents list starts collapsed and closes after a jump
+  const toc = document.querySelector('.toc details');
+  const small = matchMedia('(max-width: 900px)');
+  if (small.matches) toc.open = false;
+  toc.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { if (small.matches) toc.open = false; }));
+</script>
+</body>
+</html>

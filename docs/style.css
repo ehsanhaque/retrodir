@@ -162,3 +162,48 @@ dialog img { max-width: 94vw; max-height: 90vh; width: auto; cursor: zoom-out; }
 
 /* Version tag inside download buttons */
 .btn .ver { font-weight: 400; opacity: 0.75; margin-left: 4px; }
+
+/* Manual */
+.manual { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 40px; padding-top: 40px; padding-bottom: 64px; }
+.toc { position: sticky; top: 56px; align-self: start; max-height: calc(100vh - 72px); overflow-y: auto; }
+.toc summary { font: 700 14px/1 var(--mono); color: var(--black); background: var(--teal); padding: 8px 10px; cursor: pointer; list-style: none; }
+.toc summary::-webkit-details-marker { display: none; }
+.toc ol { margin: 0; padding: 10px 0 10px 38px; border: 1px solid rgba(85, 255, 255, 0.3); border-top: 0; font: 14px/1.4 var(--mono); }
+.toc li { margin: 6px 0; color: var(--cyan-dim); }
+.toc a { text-decoration: none; }
+.toc a:hover { color: var(--yellow); }
+.doc h1 { font: 700 clamp(32px, 6vw, 48px)/1.1 var(--mono); color: var(--yellow); margin: 0 0 8px; }
+.doc section { padding: 40px 0 0; border: 0; scroll-margin-top: 48px; }
+.doc h2 { border-bottom: 3px double var(--cyan); padding-bottom: 6px; margin-bottom: 16px; }
+.doc h3 { font: 700 17px/1.4 var(--mono); color: var(--cyan); margin: 28px 0 8px; scroll-margin-top: 48px; }
+.doc p, .doc li { color: #e8e8ff; }
+.doc ul { padding-left: 22px; }
+.doc li { margin: 6px 0; }
+.doc code { font: 14px var(--mono); color: var(--yellow); }
+.doc kbd { font: 13px/1 var(--mono); color: var(--yellow); background: rgba(0, 0, 0, 0.35); padding: 2px 5px; border: 1px solid rgba(255, 255, 85, 0.35); white-space: nowrap; }
+.doc figure { margin: 18px 0 22px; }
+.doc figure img { width: 100%; border: 3px double var(--cyan); background: var(--black); cursor: zoom-in; }
+.doc figcaption { color: var(--grey); font-size: 14px; margin-top: 8px; }
+.doc .pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 16px; }
+.doc .pair figure { margin: 8px 0; }
+.doc .themes figure { margin: 0; }
+.doc .themes img { border-width: 2px; }
+.keytable { width: 100%; border-collapse: collapse; margin: 12px 0 18px; font-size: 15px; }
+.keytable th { text-align: left; font: 700 13px/1.4 var(--mono); color: var(--black); background: var(--teal); padding: 6px 10px; }
+.keytable td { padding: 7px 10px; border-bottom: 1px dotted rgba(85, 255, 255, 0.25); vertical-align: top; color: #e8e8ff; }
+.keytable td:first-child { white-space: nowrap; width: 1%; }
+.note-box { border-left: 4px solid var(--yellow); background: rgba(0, 0, 0, 0.25); padding: 10px 14px; }
+@media (max-width: 900px) {
+  .manual { grid-template-columns: minmax(0, 1fr); gap: 0; padding-top: 16px; }
+  .toc { position: sticky; top: 40px; z-index: 5; max-height: 70vh; background: var(--blue-deep); }
+  .keytable td:first-child { white-space: normal; width: 40%; }
+}
+
+.more { margin: 28px 0 0; }
+@media (max-width: 600px) {
+  .keytable:not(.grid) tr { display: block; padding: 8px 0; border-bottom: 1px dotted rgba(85, 255, 255, 0.25); }
+  .keytable:not(.grid) td { display: block; border: 0; padding: 2px 0; width: auto !important; }
+  .keytable:not(.grid) td:first-child { white-space: normal; }
+  .keytable.grid { font-size: 13px; }
+  .keytable.grid td, .keytable.grid th { padding: 6px 5px; }
+}

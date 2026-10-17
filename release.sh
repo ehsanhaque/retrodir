@@ -24,7 +24,7 @@ APP=build/RetroDir.app
 DMG=build/RetroDir.dmg
 echo "Releasing RetroDir $VERSION, signed by: $IDENTITY"
 # Keep the website's download buttons showing this version
-sed -i '' -E "s|<span class=\"ver\">v[^<]*</span>|<span class=\"ver\">v$VERSION</span>|g" docs/index.html docs/releases.html
+sed -i '' -E "s|<span class=\"ver\">v[^<]*</span>|<span class=\"ver\">v$VERSION</span>|g" docs/*.html
 
 ARCHS="arm64 x86_64" ./build.sh
 
