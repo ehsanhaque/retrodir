@@ -12,7 +12,7 @@
 <link rel="canonical" href="https://retrodir.app/releases.html">
 <link rel="icon" type="image/png" href="img/favicon.png">
 <link rel="apple-touch-icon" href="img/icon.png">
-<link rel="stylesheet" href="style.css?v=ca78e375">
+<link rel="stylesheet" href="style.css?v=570233fb">
 </head>
 <body>
 
@@ -36,11 +36,20 @@
     <h1>Release notes</h1>
     <p class="lead">What's new in each version of RetroDir. Every release is a signed, notarized universal app for Apple silicon and Intel Macs running macOS 13 or later.</p>
     <div class="buttons" style="justify-content: flex-start">
-      <a class="btn primary" href="https://github.com/ehsanhaque/retrodir/releases/latest/download/RetroDir.dmg">Download the latest version <span class="ver">v1.0.1</span></a>
+      <a class="btn primary" href="https://github.com/ehsanhaque/retrodir/releases/latest/download/RetroDir.dmg">Download the latest version <span class="ver">v1.1</span></a>
     </div>
 
+    <article class="release" id="v1.1">
+      <h2>RetroDir 1.1 <span class="tag">LATEST</span> <span class="date">October 2026</span></h2>
+      <h3>New</h3>
+      <ul>
+        <li><b>Frost theme.</b> A translucent theme: panels, menus, dialogs, the console and the built-in terminal become tinted glass over your blurred desktop, while text stays fully opaque. Choose it from <b>Options → Theme: Frost</b>. See <a href="manual.html#settings">Themes &amp; settings</a> in the manual.</li>
+      </ul>
+      <p class="links"><a href="https://github.com/ehsanhaque/retrodir/releases/tag/v1.1">Download 1.1 on GitHub</a></p>
+    </article>
+
     <article class="release" id="v1.0.1">
-      <h2>RetroDir 1.0.1 <span class="tag">LATEST</span> <span class="date">October 2026</span></h2>
+      <h2>RetroDir 1.0.1 <span class="date">October 2026</span></h2>
       <h3>Fixed</h3>
       <ul>
         <li><kbd>Cmd-T</kbd> from a panel now opens the terminal in that panel's current folder. Before, it always brought back the first terminal tab in whatever folder it started in. If a tab is already in that folder, RetroDir switches to it; otherwise it opens a new tab there. Shells that are busy (an ssh session, an editor) are never changed.</li>

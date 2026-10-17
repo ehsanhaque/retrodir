@@ -211,3 +211,9 @@ dialog img { max-width: 94vw; max-height: 90vh; width: auto; cursor: zoom-out; }
 .toc li:has(a[aria-current])::marker { color: var(--cyan); }
 
 .menubar a[aria-current] { background: var(--black); color: var(--white); }
+
+/* Featured theme (Frost) above the theme grid */
+.theme-feature { margin: 0 0 22px; }
+.theme-feature img { border: 3px double var(--cyan); cursor: zoom-in; width: 100%; }
+.theme-feature figcaption { font: 15px/1.4 var(--mono); color: var(--cyan); margin-top: 8px; }
+.new { font: 700 11px/1 var(--mono); background: var(--yellow); color: var(--black); padding: 3px 5px; vertical-align: 2px; }

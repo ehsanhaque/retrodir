@@ -14,7 +14,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" href="img/favicon.png">
 <link rel="apple-touch-icon" href="img/icon.png">
-<link rel="stylesheet" href="style.css?v=ca78e375">
+<link rel="stylesheet" href="style.css?v=570233fb">
 </head>
 <body>
 
@@ -39,7 +39,7 @@
     <p class="tagline">A retro dual-panel file manager for macOS, with a built-in tabbed terminal.</p>
     <p class="sub">Free · Open source (MIT) · Keyboard-first · macOS 13 or later</p>
     <div class="buttons">
-      <a class="btn primary" href="https://github.com/ehsanhaque/retrodir/releases/latest/download/RetroDir.dmg">Download for macOS <span class="ver">v1.0.1</span></a>
+      <a class="btn primary" href="https://github.com/ehsanhaque/retrodir/releases/latest/download/RetroDir.dmg">Download for macOS <span class="ver">v1.1</span></a>
       <a class="btn" href="https://github.com/ehsanhaque/retrodir">View on GitHub</a>
     </div>
     <img class="shot" src="img/hero.png" width="1754" height="884"
@@ -108,8 +108,9 @@
 
 <section id="themes" data-nav="screenshots">
   <div class="wrap">
-    <h2>Four colour themes</h2>
-    <p class="lead">Classic Blue is the default. Switch any time from Options in the menu.</p>
+    <h2>Five colour themes</h2>
+    <p class="lead">Classic Blue is the default. Switch any time from Options in the menu. New in 1.1: <b>Frost</b>, a translucent theme that turns panels, menus and the terminal into tinted glass over your blurred desktop.</p>
+    <figure class="theme-feature"><img src="img/theme-4.png" width="1754" height="884" loading="lazy" alt="Frost theme: translucent panels over a colourful blurred background"><figcaption>Frost <span class="new">NEW</span> · translucent</figcaption></figure>
     <div class="themes">
       <figure><img src="img/hero.png" width="1754" height="884" loading="lazy" alt="Classic Blue theme"><figcaption>Classic Blue</figcaption></figure>
       <figure><img src="img/theme-1.png" width="1754" height="884" loading="lazy" alt="Midnight theme"><figcaption>Midnight</figcaption></figure>
@@ -147,7 +148,7 @@
     <div class="download">
       <div class="panel"><h3>Download</h3>
         <p>A signed and notarized universal app for Apple silicon and Intel Macs. Requires macOS 13 Ventura or later.</p>
-        <a class="btn primary" href="https://github.com/ehsanhaque/retrodir/releases/latest/download/RetroDir.dmg">Download RetroDir <span class="ver">v1.0.1</span></a>
+        <a class="btn primary" href="https://github.com/ehsanhaque/retrodir/releases/latest/download/RetroDir.dmg">Download RetroDir <span class="ver">v1.1</span></a>
         <p class="note">Open the DMG and drag RetroDir to Applications. See <a href="releases.html">what’s new</a>, or older versions on <a href="https://github.com/ehsanhaque/retrodir/releases">GitHub Releases</a>.</p>
       </div>
       <div class="panel"><h3>Build from source</h3>
@@ -219,7 +220,7 @@ open build/RetroDir.app</pre>
 
   // Click a screenshot to enlarge it
   const box = document.getElementById('lightbox'), big = box.querySelector('img');
-  document.querySelectorAll('.gallery img, .themes img, .hero .shot').forEach(img => {
+  document.querySelectorAll('.gallery img, .themes img, .theme-feature img, .hero .shot').forEach(img => {
     img.addEventListener('click', () => { big.src = img.src; big.alt = img.alt; box.showModal(); });
   });
   box.addEventListener('click', () => box.close());
